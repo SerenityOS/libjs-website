@@ -22,9 +22,11 @@ async function createREPL(elements) {
 
   try {
     const dateTimeFormat = new Intl.DateTimeFormat();
-    timeZone = Module.allocateUTF8(dateTimeFormat.resolvedOptions().timeZone);
+    timeZone = Module.stringToNewUTF8(
+      dateTimeFormat.resolvedOptions().timeZone
+    );
   } catch {
-    timeZone = Module.allocateUTF8("UTC");
+    timeZone = Module.stringToNewUTF8("UTC");
   }
 
   if (Module._initialize_repl(timeZone) !== 0)
@@ -94,7 +96,7 @@ async function createREPL(elements) {
       return node;
     },
     execute(text) {
-      const encodedText = Module.allocateUTF8(text);
+      const encodedText = Module.stringToNewUTF8(text);
       let oldRepl = globalDisplayToUser.repl;
       try {
         globalDisplayToUser.repl = repl.private.outputs;
